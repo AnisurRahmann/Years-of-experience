@@ -1,12 +1,10 @@
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { join } from 'path';
 import { AppModule } from './app.module';
 import { PrismaClientExceptionFilter } from './prisma-client-exception.filter';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
-
-
 
 async function bootstrap() {
   // const app = await NestFactory.create(AppModule);
@@ -42,6 +40,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(8080);
+  await app.listen((process.env.PORT, '0.0.0.0') || 8080);
 }
 bootstrap();
