@@ -22,8 +22,8 @@ const Header = () => {
 
   useEffect(() => {
     const domain = REACT_APP_BASE_URL;
-    setPublicUrl(`${domain}/profile/${user.id}`);
-  }, []);
+    if (user !== null) setPublicUrl(`${domain}/profile/${user.id}`);
+  }, [user]);
 
   return (
     <header className="header">

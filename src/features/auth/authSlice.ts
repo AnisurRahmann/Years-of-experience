@@ -5,13 +5,23 @@ import authService from "./authService";
 // Get user from localstorage
 const user = authService.getWithExpiry("user");
 
+interface AuthState {
+  user: any | null;
+  isError: boolean;
+  isSuccess: boolean;
+  isLoading: boolean;
+  message: string;
+  loginLoading: boolean
+}
+
 const initialState = {
   user: user ? user : null,
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
-};
+  loginLoading: false
+} as AuthState;
 
 
 
@@ -79,15 +89,15 @@ export const authSlice = createSlice({
         state.user = null;
       })
       .addCase(login.pending, (state) => {
-        state.isLoading = true;
+        state.loginLoading = true;
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loginLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
       })
       .addCase(login.rejected, (state, action: any) => {
-        state.isLoading = false;
+        state.loginLoading = false;
         state.isError = true;
         state.message = action.payload;
         state.user = null;

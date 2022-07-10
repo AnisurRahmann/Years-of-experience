@@ -20,9 +20,8 @@ const Login = () => {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { user, isLoading, isSuccess, isError, message } = useAppSelector(
-    (state) => state.auth
-  );
+  const { user, isLoading, loginLoading, isSuccess, isError, message } =
+    useAppSelector((state) => state.auth);
 
   useEffect(() => {
     if (isError) {
@@ -31,11 +30,11 @@ const Login = () => {
         message.forEach((err: string) => toast.error(err));
       }
       toast.error(message);
+      dispatch(reset());
     }
     if (isSuccess || user) {
       navigate("/");
     }
-    dispatch(reset());
   }, [user, isLoading, isSuccess, isError, message, navigate, dispatch]);
 
   const onSubmit: SubmitHandler<UserLoginDataType> = (data) => {
@@ -103,7 +102,9 @@ const Login = () => {
           <div className="form-group">
             <button
               type="submit"
-              className="button is-dark btn-block"
+              className={` button is-dark btn-block ${
+                loginLoading ? "is-loading" : ""
+              } `}
               disabled={!isDirty || !isValid}
             >
               Submit
