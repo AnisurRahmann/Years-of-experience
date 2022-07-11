@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
 
-const RequireAuth = () => {
+const RequireAuth: React.FunctionComponent = () => {
   const { user } = useAppSelector((state) => state.auth);
   const location = useLocation();
 

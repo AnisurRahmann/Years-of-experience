@@ -7,7 +7,7 @@ import { logout, reset } from "../features/auth/authSlice";
 
 const { REACT_APP_BASE_URL } = process.env;
 
-const Header = () => {
+const Header: React.FunctionComponent = () => {
   const [publicUrl, setPublicUrl] = useState("");
 
   const navigate = useNavigate();

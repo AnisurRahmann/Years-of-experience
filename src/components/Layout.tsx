@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 
-const Layout = () => {
+const Layout: React.FunctionComponent = () => {
   return (
     <div className="container">
       <Header />

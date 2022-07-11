@@ -24,6 +24,32 @@ interface UserState {
   isLoading: boolean;
   isSuccess: boolean;
   message: string;
+  is_new_work_experience_added: boolean;
+  delete: {
+    isLoading: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    message: string;
+  };
+  updateWorkExperience: {
+    isLoading: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    message: string;
+  };
+  addWorkExperience: {
+    isLoading: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    message: string;
+  };
+  updateProfile: {
+    isLoading: boolean;
+    isSuccess: boolean;
+    isError: boolean;
+    message: string;
+  };
+  isUserLoading: boolean;
 }
 
 const initialState = {
@@ -38,6 +64,32 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
   message: "",
+  is_new_work_experience_added: false,
+  delete: {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    message: "",
+  },
+  updateWorkExperience: {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    message: "",
+  },
+  addWorkExperience: {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    message: "",
+  },
+  updateProfile: {
+    isLoading: false,
+    isSuccess: false,
+    isError: false,
+    message: "",
+  },
+  isUserLoading: false,
 } as UserState;
 
 export const getUser = createAsyncThunk(
@@ -182,15 +234,51 @@ export const userSlice = createSlice({
       state.introduction = "";
       state.age = null;
       state.is_public = false;
+      state.is_new_work_experience_added = false;
+      state.delete = {
+        isLoading: false,
+        isSuccess: false,
+        message: "",
+        isError: false,
+      };
+      state.updateWorkExperience = {
+        isLoading: false,
+        isSuccess: false,
+        isError: false,
+        message: "",
+      };
+      state.updateProfile = {
+        isLoading: false,
+        isSuccess: false,
+        isError: false,
+        message: "",
+      };
+      state.isUserLoading = false;
+    },
+    resetUpdateWorkExperience: (state) => {
+      state.updateWorkExperience = {
+        isLoading: false,
+        isSuccess: false,
+        isError: false,
+        message: "",
+      };
+    },
+    resetAddWorkExperience: (state) => {
+      state.addWorkExperience = {
+        isLoading: false,
+        isSuccess: false,
+        isError: false,
+        message: "",
+      };
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getUser.pending, (state, action) => {
-        state.isLoading = true;
+        state.isUserLoading = true;
       })
       .addCase(getUser.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.isUserLoading = false;
         state.isSuccess = true;
         state.profile_picture_url = action.payload.profile_picture_url;
         state.name = action.payload.name;
@@ -201,7 +289,7 @@ export const userSlice = createSlice({
         state.work_experience = action.payload.work_experience;
       })
       .addCase(getUser.rejected, (state, action: any) => {
-        state.isLoading = false;
+        state.isUserLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
@@ -219,49 +307,51 @@ export const userSlice = createSlice({
         state.message = action.payload;
       })
       .addCase(updateUser.pending, (state, action) => {
-        state.isLoading = true;
+        state.updateProfile.isLoading = true;
+        state.updateProfile.isSuccess = false;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
+        state.updateProfile.isLoading = false;
+        state.updateProfile.isSuccess = true;
         state.name = action.payload.name;
         state.introduction = action.payload.introduction;
         state.age = action.payload.age;
         state.is_public = action.payload.is_public;
       })
       .addCase(updateUser.rejected, (state, action: any) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
+        state.updateProfile.isLoading = false;
+        state.updateProfile.isError = true;
+        state.updateProfile.isSuccess = false;
+        state.updateProfile.message = action.payload;
       })
       .addCase(updateWorkExperience.pending, (state, action) => {
-        state.isLoading = true;
+        state.updateWorkExperience.isLoading = true;
       })
       .addCase(updateWorkExperience.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.work_experience = action.payload;
+        state.updateWorkExperience.isLoading = false;
+        state.updateWorkExperience.isSuccess = true;
+        state.work_experience = action.payload
       })
       .addCase(updateWorkExperience.rejected, (state, action: any) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
+        state.updateWorkExperience.isLoading = false;
+        state.updateWorkExperience.isError = true;
+        state.updateWorkExperience.message = action.payload;
       })
       .addCase(addWorkExperience.pending, (state, action) => {
-        state.isLoading = true;
+        state.addWorkExperience.isLoading = true;
       })
       .addCase(addWorkExperience.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
+        state.addWorkExperience.isLoading = false;
+        state.addWorkExperience.isSuccess = true;
         state.work_experience.push(action.payload);
       })
       .addCase(addWorkExperience.rejected, (state, action: any) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
+        state.addWorkExperience.isLoading = false;
+        state.addWorkExperience.isError = true;
+        state.addWorkExperience.message = action.payload;
       })
       .addCase(updateCompanyLogoUrl.pending, (state, action) => {
-        state.isLoading = true;
+        // state.isLoading = true;
       })
       .addCase(updateCompanyLogoUrl.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -274,21 +364,22 @@ export const userSlice = createSlice({
         state.message = action.payload;
       })
       .addCase(deleteWorkExperience.pending, (state, action) => {
-        state.isLoading = true;
+        state.delete.isLoading = true;
       })
       .addCase(deleteWorkExperience.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.work_experience = action.payload;
+        state.delete.isLoading = false;
+        state.delete.isSuccess = true;
+        state.work_experience = action.payload
       })
       .addCase(deleteWorkExperience.rejected, (state, action: any) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
+        state.delete.isLoading = false;
+        state.delete.isError = true;
+        state.delete.message = action.payload;
+      });
   },
 });
 
-export const { reset } = userSlice.actions;
+export const { reset, resetUpdateWorkExperience, resetAddWorkExperience } =
+  userSlice.actions;
 
 export default userSlice.reducer;

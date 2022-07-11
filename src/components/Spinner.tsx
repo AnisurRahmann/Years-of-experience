@@ -1,4 +1,4 @@
-const Spinner = () => {
+const Spinner: React.FunctionComponent = () => {
   return (
     <div className="loading-spinner-container">
       <div className="loading-spinner"></div>

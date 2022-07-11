@@ -3,10 +3,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Modal from "../components/Modal";
-import { addWorkExperience } from "../features/user/userSlice";
+import {
+  addWorkExperience,
+  resetAddWorkExperience,
+} from "../features/user/userSlice";
 import { setModalOpen } from "../features/utils/utilSlice";
 
-const AddWorkExperience = () => {
+const AddWorkExperience: React.FunctionComponent = () => {
   const { isModalOpen } = useAppSelector((state) => state.util);
   const dispatch = useAppDispatch();
 
@@ -30,8 +33,8 @@ const AddWorkExperience = () => {
       })
     );
   };
-  const { message, isLoading, isSuccess, isError } = useAppSelector(
-    (state) => state.user
+  const { message, isLoading, isError, isSuccess } = useAppSelector(
+    (state) => state.user.addWorkExperience
   );
 
   const {
@@ -55,21 +58,19 @@ const AddWorkExperience = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      // toast.success("Profile updated successfully");
+      toast.success("New work experience added successfully");
       dispatch(
         setModalOpen({
           isOpen: false,
           modalType: "",
         })
       );
+      dispatch(resetAddWorkExperience());
     }
     if (isError) {
       toast.error(message);
     }
-    return () => {
-      // toast.success("Profile updated successfully");
-    };
-  }, [isError, isSuccess, message]);
+  }, [isError, message, isLoading, dispatch, isSuccess]);
   return (
     <Modal
       isOpen={isModalOpen.modalType === "ADD_WORK_EXPERIENCE" ? true : false}
@@ -102,7 +103,7 @@ const AddWorkExperience = () => {
                 <input
                   className="input"
                   type="text"
-                  placeholder="job_title"
+                  placeholder="job Title"
                   {...register("job_title")}
                 />
               </div>
@@ -124,8 +125,13 @@ const AddWorkExperience = () => {
                   className="input"
                   type="date"
                   placeholder="Start Date"
-                  {...register("start_date")}
+                  {...register("start_date", {
+                    required: "Start date is required",
+                  })}
                 />
+                <p className="help is-danger ">
+                  {errors.start_date && errors.start_date.message}
+                </p>
               </div>
               <div className="field">
                 <label className="label">End Date</label>
@@ -163,7 +169,6 @@ const AddWorkExperience = () => {
                   isLoading ? "is-loading" : ""
                 }`}
                 type="submit"
-                // disabled={!isDirty || !isValid}
               >
                 Save
               </button>

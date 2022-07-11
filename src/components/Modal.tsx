@@ -1,7 +1,12 @@
 import { useAppDispatch } from "../app/hooks";
 import { setModalOpen } from "../features/utils/utilSlice";
 
-const Modal = ({ isOpen, children }: any) => {
+interface ModalProps {
+  isOpen: boolean;
+  children: JSX.Element;
+}
+
+const Modal: React.FunctionComponent<ModalProps> = ({ isOpen, children }) => {
   const dispatch = useAppDispatch();
   return (
     <>

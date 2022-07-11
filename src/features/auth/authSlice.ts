@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserLoginDataType, UserRegisterDataType } from "../../types/userTypes";
 import authService from "./authService";
 
@@ -82,7 +82,7 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.user = action.payload;
       })
-      .addCase(signUp.rejected, (state, action: any) => {
+      .addCase(signUp.rejected, (state, action: PayloadAction<any>) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
@@ -91,12 +91,12 @@ export const authSlice = createSlice({
       .addCase(login.pending, (state) => {
         state.loginLoading = true;
       })
-      .addCase(login.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state, action: PayloadAction) => {
         state.loginLoading = false;
         state.isSuccess = true;
         state.user = action.payload;
       })
-      .addCase(login.rejected, (state, action: any) => {
+      .addCase(login.rejected, (state, action: PayloadAction<any>) => {
         state.loginLoading = false;
         state.isError = true;
         state.message = action.payload;

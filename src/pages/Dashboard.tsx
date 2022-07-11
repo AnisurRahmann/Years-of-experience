@@ -10,13 +10,14 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import AddWorkExperience from "../components/AddWorkExperience";
 import DeleteWorkExperience from "../components/DeleteWorkExperience";
 import EditProfile from "../components/EditProfile";
-import EditWorkExperience from "../components/EditWorkExperience";
 import Spinner from "../components/Spinner";
+import EditWorkExperience from "../components/UpdateWorkExperience";
 import UploadCompanyLogo from "../components/UploadCompanyLogo";
 import UploadProfilePicture from "../components/UploadProfilePicture";
 import {
   getUser,
   reset,
+  resetUpdateWorkExperience,
   updateUser,
   updateWorkExperience,
 } from "../features/user/userSlice";
@@ -36,19 +37,26 @@ const Dashboard = () => {
     work_experience,
     message,
     isLoading,
+    isUserLoading,
     isSuccess,
     isError,
+    updateWorkExperience: updateWorkExperienceState,
   } = useAppSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getUser());
-
     return () => {
       dispatch(reset());
     };
   }, [dispatch]);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (updateWorkExperienceState.isSuccess) {
+      dispatch(resetUpdateWorkExperience());
+    }
+  }, [dispatch, updateWorkExperienceState.isSuccess]);
+
+  if (isUserLoading) {
     return <Spinner />;
   }
 
@@ -133,14 +141,15 @@ const Dashboard = () => {
                         <input
                           type="checkbox"
                           checked={data.is_public}
-                          onChange={(e) =>
+                          onChange={(e) => {
                             dispatch(
                               updateWorkExperience({
                                 id: data.id,
                                 is_public: e.target.checked,
                               })
-                            )
-                          }
+                            );
+                            dispatch(reset());
+                          }}
                         />
                         <span className="slider"></span>
                       </label>
@@ -246,6 +255,7 @@ const Dashboard = () => {
                     checked={is_public}
                     onChange={(e) => {
                       dispatch(updateUser({ is_public: e.target.checked }));
+                      dispatch(reset());
                     }}
                   />
                   <span className="slider"></span>

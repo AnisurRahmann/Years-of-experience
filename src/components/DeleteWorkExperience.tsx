@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Modal from "../components/Modal";
 import { deleteWorkExperience } from "../features/user/userSlice";
@@ -5,7 +7,28 @@ import { setModalOpen } from "../features/utils/utilSlice";
 
 const DeleteWorkExperience = ({ workExperienceId }: any) => {
   const { isModalOpen } = useAppSelector((state) => state.util);
+  const { isLoading, isSuccess, isError, message } = useAppSelector(
+    (state) => state.user.delete
+  );
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (
+      isSuccess &&
+      isModalOpen.modalType === "DELETE_WORK_EXPERIENCE" + workExperienceId
+    ) {
+      dispatch(
+        setModalOpen({
+          isOpen: false,
+          modalType: "",
+        })
+      );
+      toast.success("Deleted Successfully");
+    }
+    if (isError) {
+      toast.error(message);
+    }
+  }, [dispatch, isError, isSuccess, message]);
 
   return (
     <Modal
@@ -21,17 +44,11 @@ const DeleteWorkExperience = ({ workExperienceId }: any) => {
       >
         <div className="buttons has-text-centered are-medium">
           <button
-            className="button is-danger"
+            className={`button is-danger ${isLoading ? "is-loading" : ""} `}
             onClick={() => {
               dispatch(
                 deleteWorkExperience({
                   id: workExperienceId,
-                })
-              );
-              dispatch(
-                setModalOpen({
-                  isOpen: false,
-                  modalType: "",
                 })
               );
             }}
@@ -39,7 +56,7 @@ const DeleteWorkExperience = ({ workExperienceId }: any) => {
             Yes
           </button>
           <button
-            className="button is-primary"
+            className={`button is-primary ${isLoading ? " " : ""} `}
             onClick={() => {
               dispatch(
                 setModalOpen({

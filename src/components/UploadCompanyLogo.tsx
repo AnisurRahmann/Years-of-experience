@@ -2,9 +2,9 @@ import { useState } from "react";
 import { FaSave } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import Modal from "./Modal";
 import { updateCompanyLogoUrl } from "../features/user/userSlice";
 import { setModalOpen } from "../features/utils/utilSlice";
+import Modal from "./Modal";
 
 const {
   REACT_APP_CLOUDINARY_IMAGE_URL,

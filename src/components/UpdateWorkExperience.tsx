@@ -2,10 +2,23 @@ import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import Modal from "../components/Modal";
 import { updateWorkExperience } from "../features/user/userSlice";
 import { setModalOpen } from "../features/utils/utilSlice";
-const EditWorkExperience = ({ data }: any) => {
+import Modal from "./Modal";
+
+type EditWorkExperienceProps = {
+  id: string;
+  company: string;
+  end_date: string;
+  job_description: string;
+  start_date: string;
+  is_current: boolean;
+  job_title: string;
+};
+
+const EditWorkExperience: React.FunctionComponent<{
+  data: EditWorkExperienceProps;
+}> = ({ data }) => {
   const { isModalOpen } = useAppSelector((state) => state.util);
   const dispatch = useAppDispatch();
 
@@ -19,8 +32,6 @@ const EditWorkExperience = ({ data }: any) => {
     is_current,
   } = data;
 
-  console.log(workExperienceId, "~~~~~>>");
-
   const [isCurrentJob, setCurrentJob] = useState<boolean>(is_current);
 
   const onSubmit: SubmitHandler<{
@@ -30,7 +41,6 @@ const EditWorkExperience = ({ data }: any) => {
     start_date: string;
     end_date: string;
   }> = (data) => {
-    console.log(data, "data");
     dispatch(
       updateWorkExperience({
         id: workExperienceId,
@@ -44,7 +54,7 @@ const EditWorkExperience = ({ data }: any) => {
     );
   };
   const { message, isLoading, isSuccess, isError } = useAppSelector(
-    (state) => state.user
+    (state) => state.user.updateWorkExperience
   );
 
   const {
@@ -75,8 +85,11 @@ const EditWorkExperience = ({ data }: any) => {
   start_date_ref.current = watch("start_date", "");
 
   useEffect(() => {
-    if (isSuccess) {
-      // toast.success("Profile updated successfully");
+    if (
+      isSuccess &&
+      isModalOpen.modalType === "EDIT_WORK_EXPERIENCE" + workExperienceId
+    ) {
+      toast.success("Work Experience Updated Successfully");
       dispatch(
         setModalOpen({
           isOpen: false,
@@ -87,10 +100,14 @@ const EditWorkExperience = ({ data }: any) => {
     if (isError) {
       toast.error(message);
     }
-    return () => {
-      // toast.success("Profile updated successfully");
-    };
-  }, [isError, isSuccess, message]);
+  }, [
+    dispatch,
+    isError,
+    isModalOpen.modalType,
+    isSuccess,
+    message,
+    workExperienceId,
+  ]);
   return (
     <Modal
       isOpen={
@@ -188,7 +205,6 @@ const EditWorkExperience = ({ data }: any) => {
                   isLoading ? "is-loading" : ""
                 }`}
                 type="submit"
-                // disabled={!isDirty || !isValid}
               >
                 Update
               </button>

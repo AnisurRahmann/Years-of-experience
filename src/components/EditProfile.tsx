@@ -3,7 +3,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Modal from "../components/Modal";
-import { updateUser } from "../features/user/userSlice";
+import {
+  updateUser,
+  resetUpdateWorkExperience,
+} from "../features/user/userSlice";
 import { setModalOpen } from "../features/utils/utilSlice";
 
 const EditProfile = () => {
@@ -24,16 +27,13 @@ const EditProfile = () => {
       })
     );
   };
-  const {
-    name,
-    email,
-    age,
-    introduction,
-    message,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useAppSelector((state) => state.user);
+  const { name, email, age, introduction } = useAppSelector(
+    (state) => state.user
+  );
+
+  const { message, isLoading, isSuccess, isError } = useAppSelector(
+    (state) => state.user.updateProfile
+  );
 
   const {
     register,
@@ -56,21 +56,19 @@ const EditProfile = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      // toast.success("Profile updated successfully");
+      toast.success("Profile updated successfully");
       dispatch(
         setModalOpen({
           isOpen: false,
           modalType: "",
         })
       );
+      dispatch(resetUpdateWorkExperience());
     }
     if (isError) {
       toast.error(message);
     }
-    return () => {
-      // toast.success("Profile updated successfully");
-    };
-  }, [isError, isSuccess, message]);
+  }, [dispatch, isError, isSuccess, message]);
   return (
     <Modal isOpen={isModalOpen.modalType === "EDIT_PROFILE" ? true : false}>
       <div
