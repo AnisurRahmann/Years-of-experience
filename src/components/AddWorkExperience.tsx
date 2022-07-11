@@ -103,7 +103,7 @@ const AddWorkExperience: React.FunctionComponent = () => {
                 <input
                   className="input"
                   type="text"
-                  placeholder="job Title"
+                  placeholder="Job Title"
                   {...register("job_title")}
                 />
               </div>

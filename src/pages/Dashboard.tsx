@@ -16,7 +16,7 @@ import UploadCompanyLogo from "../components/UploadCompanyLogo";
 import UploadProfilePicture from "../components/UploadProfilePicture";
 import {
   getUser,
-  reset,
+  resetUpdateProfile,
   resetUpdateWorkExperience,
   updateUser,
   updateWorkExperience,
@@ -45,9 +45,9 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getUser());
-    return () => {
-      dispatch(reset());
-    };
+    // return () => {
+    //   dispatch(reset());
+    // };
   }, [dispatch]);
 
   useEffect(() => {
@@ -148,7 +148,7 @@ const Dashboard = () => {
                                 is_public: e.target.checked,
                               })
                             );
-                            dispatch(reset());
+                            dispatch(resetUpdateWorkExperience());
                           }}
                         />
                         <span className="slider"></span>
@@ -255,7 +255,7 @@ const Dashboard = () => {
                     checked={is_public}
                     onChange={(e) => {
                       dispatch(updateUser({ is_public: e.target.checked }));
-                      dispatch(reset());
+                      dispatch(resetUpdateProfile());
                     }}
                   />
                   <span className="slider"></span>

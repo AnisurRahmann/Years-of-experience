@@ -271,6 +271,14 @@ export const userSlice = createSlice({
         message: "",
       };
     },
+    resetUpdateProfile: (state) => {
+      state.updateProfile = {
+        isLoading: false,
+        isSuccess: false,
+        isError: false,
+        message: "",
+      };
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -379,7 +387,11 @@ export const userSlice = createSlice({
   },
 });
 
-export const { reset, resetUpdateWorkExperience, resetAddWorkExperience } =
-  userSlice.actions;
+export const {
+  reset,
+  resetUpdateWorkExperience,
+  resetAddWorkExperience,
+  resetUpdateProfile,
+} = userSlice.actions;
 
 export default userSlice.reducer;

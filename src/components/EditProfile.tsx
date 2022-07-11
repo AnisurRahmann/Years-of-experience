@@ -3,10 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Modal from "../components/Modal";
-import {
-  updateUser,
-  resetUpdateWorkExperience,
-} from "../features/user/userSlice";
+import { resetUpdateProfile, updateUser } from "../features/user/userSlice";
 import { setModalOpen } from "../features/utils/utilSlice";
 
 const EditProfile = () => {
@@ -63,7 +60,7 @@ const EditProfile = () => {
           modalType: "",
         })
       );
-      dispatch(resetUpdateWorkExperience());
+      dispatch(resetUpdateProfile());
     }
     if (isError) {
       toast.error(message);
