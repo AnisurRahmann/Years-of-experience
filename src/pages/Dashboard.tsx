@@ -5,13 +5,12 @@ import {
   FaPlusSquare,
   FaTrashAlt,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import AddWorkExperience from "../components/AddWorkExperience";
 import DeleteWorkExperience from "../components/DeleteWorkExperience";
-import EditProfile from "../components/EditProfile";
+import UpdateProfile from "../components/UpdateProfile";
 import Spinner from "../components/Spinner";
-import EditWorkExperience from "../components/UpdateWorkExperience";
+import UpdateWorkExperience from "../components/UpdateWorkExperience";
 import UploadCompanyLogo from "../components/UploadCompanyLogo";
 import UploadProfilePicture from "../components/UploadProfilePicture";
 import {
@@ -24,7 +23,6 @@ import {
 import { setModalOpen } from "../features/utils/utilSlice";
 
 const Dashboard = () => {
-  const navigation = useNavigate();
   const dispatch = useAppDispatch();
 
   const {
@@ -35,19 +33,12 @@ const Dashboard = () => {
     is_public,
     introduction,
     work_experience,
-    message,
-    isLoading,
     isUserLoading,
-    isSuccess,
-    isError,
     updateWorkExperience: updateWorkExperienceState,
   } = useAppSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getUser());
-    // return () => {
-    //   dispatch(reset());
-    // };
   }, [dispatch]);
 
   useEffect(() => {
@@ -73,7 +64,7 @@ const Dashboard = () => {
     } = data;
     return (
       <div key={id}>
-        <EditWorkExperience data={data} />
+        <UpdateWorkExperience data={data} />
         <UploadCompanyLogo workExperienceId={id} />
         <DeleteWorkExperience workExperienceId={id} />
         <div className="m-6">
@@ -127,7 +118,7 @@ const Dashboard = () => {
                         dispatch(
                           setModalOpen({
                             isOpen: true,
-                            modalType: "EDIT_WORK_EXPERIENCE" + id,
+                            modalType: "UPDATE_WORK_EXPERIENCE" + id,
                           })
                         )
                       }
@@ -204,7 +195,7 @@ const Dashboard = () => {
       <>
         <AddWorkExperience />
         <UploadProfilePicture />
-        <EditProfile />
+        <UpdateProfile />
 
         <div className="hero-body">
           <div className="is-flex is-justify-content-space-between">
@@ -234,12 +225,13 @@ const Dashboard = () => {
             </div>
             <div className="is-flex is-flex-direction-column ">
               <button
+                id="EDIT_PROFILE"
                 className="button is-link"
                 onClick={() =>
                   dispatch(
                     setModalOpen({
                       isOpen: true,
-                      modalType: "EDIT_PROFILE",
+                      modalType: "UPDATE_PROFILE",
                     })
                   )
                 }

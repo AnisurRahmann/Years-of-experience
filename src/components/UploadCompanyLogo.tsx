@@ -16,7 +16,9 @@ const url = `${REACT_APP_CLOUDINARY_IMAGE_URL}`;
 const uploadPreset = `${REACT_APP_CLOUDINARY_FILE_UPLOAD_PRESET}`;
 const cloudName = `${REACT_APP_CLOUDINARY_CLOUD_NAME}`;
 
-const UploadCompanyLogo = ({ workExperienceId }: any) => {
+const UploadCompanyLogo: React.FunctionComponent<{
+  workExperienceId: string;
+}> = ({ workExperienceId }) => {
   const [image, setImage] = useState<any>();
   const [isButtonLoading, setButtonLoading] = useState(false);
   const { isModalOpen } = useAppSelector((state) => state.util);
@@ -53,7 +55,6 @@ const UploadCompanyLogo = ({ workExperienceId }: any) => {
           setButtonLoading(false);
         })
         .catch((err) => {
-          console.log(err);
           setButtonLoading(false);
           toast.error("Something went wrong. Please try again!");
         });

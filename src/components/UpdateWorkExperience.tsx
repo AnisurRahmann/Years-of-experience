@@ -6,7 +6,7 @@ import { updateWorkExperience } from "../features/user/userSlice";
 import { setModalOpen } from "../features/utils/utilSlice";
 import Modal from "./Modal";
 
-type EditWorkExperienceProps = {
+type UpdateWorkExperienceProps = {
   id: string;
   company: string;
   end_date: string;
@@ -16,8 +16,8 @@ type EditWorkExperienceProps = {
   job_title: string;
 };
 
-const EditWorkExperience: React.FunctionComponent<{
-  data: EditWorkExperienceProps;
+const UpdateWorkExperience: React.FunctionComponent<{
+  data: UpdateWorkExperienceProps;
 }> = ({ data }) => {
   const { isModalOpen } = useAppSelector((state) => state.util);
   const dispatch = useAppDispatch();
@@ -87,7 +87,7 @@ const EditWorkExperience: React.FunctionComponent<{
   useEffect(() => {
     if (
       isSuccess &&
-      isModalOpen.modalType === "EDIT_WORK_EXPERIENCE" + workExperienceId
+      isModalOpen.modalType === "UPDATE_WORK_EXPERIENCE" + workExperienceId
     ) {
       toast.success("Work Experience Updated Successfully");
       dispatch(
@@ -111,7 +111,7 @@ const EditWorkExperience: React.FunctionComponent<{
   return (
     <Modal
       isOpen={
-        isModalOpen.modalType === "EDIT_WORK_EXPERIENCE" + workExperienceId
+        isModalOpen.modalType === "UPDATE_WORK_EXPERIENCE" + workExperienceId
           ? true
           : false
       }
@@ -215,4 +215,4 @@ const EditWorkExperience: React.FunctionComponent<{
     </Modal>
   );
 };
-export default EditWorkExperience;
+export default UpdateWorkExperience;

@@ -5,7 +5,7 @@ import Modal from "../components/Modal";
 import { deleteWorkExperience } from "../features/user/userSlice";
 import { setModalOpen } from "../features/utils/utilSlice";
 
-const DeleteWorkExperience = ({ workExperienceId }: any) => {
+const DeleteWorkExperience = ({ workExperienceId }: { workExperienceId : string}) => {
   const { isModalOpen } = useAppSelector((state) => state.util);
   const { isLoading, isSuccess, isError, message } = useAppSelector(
     (state) => state.user.delete

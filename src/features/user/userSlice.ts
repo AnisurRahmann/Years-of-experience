@@ -278,7 +278,7 @@ export const userSlice = createSlice({
         isError: false,
         message: "",
       };
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -294,7 +294,14 @@ export const userSlice = createSlice({
         state.introduction = action.payload.introduction;
         state.age = action.payload.age;
         state.is_public = action.payload.is_public;
-        state.work_experience = action.payload.work_experience;
+        state.work_experience = action.payload.work_experience.sort(
+          (itemA: any, itemB: any) => {
+            return (
+              new Date(itemB.created_at).getTime() -
+              new Date(itemA.created_at).getTime()
+            );
+          }
+        );
       })
       .addCase(getUser.rejected, (state, action: any) => {
         state.isUserLoading = false;
@@ -338,7 +345,14 @@ export const userSlice = createSlice({
       .addCase(updateWorkExperience.fulfilled, (state, action) => {
         state.updateWorkExperience.isLoading = false;
         state.updateWorkExperience.isSuccess = true;
-        state.work_experience = action.payload
+        state.work_experience = action.payload.sort(
+          (itemA: any, itemB: any) => {
+            return (
+              new Date(itemB.created_at).getTime() -
+              new Date(itemA.created_at).getTime()
+            );
+          }
+        );
       })
       .addCase(updateWorkExperience.rejected, (state, action: any) => {
         state.updateWorkExperience.isLoading = false;
@@ -351,7 +365,7 @@ export const userSlice = createSlice({
       .addCase(addWorkExperience.fulfilled, (state, action) => {
         state.addWorkExperience.isLoading = false;
         state.addWorkExperience.isSuccess = true;
-        state.work_experience.push(action.payload);
+        state.work_experience.unshift(action.payload);
       })
       .addCase(addWorkExperience.rejected, (state, action: any) => {
         state.addWorkExperience.isLoading = false;
@@ -364,7 +378,14 @@ export const userSlice = createSlice({
       .addCase(updateCompanyLogoUrl.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.work_experience = action.payload;
+        state.work_experience = action.payload.sort(
+          (itemA: any, itemB: any) => {
+            return (
+              new Date(itemB.created_at).getTime() -
+              new Date(itemA.created_at).getTime()
+            );
+          }
+        );
       })
       .addCase(updateCompanyLogoUrl.rejected, (state, action: any) => {
         state.isLoading = false;
@@ -377,7 +398,14 @@ export const userSlice = createSlice({
       .addCase(deleteWorkExperience.fulfilled, (state, action) => {
         state.delete.isLoading = false;
         state.delete.isSuccess = true;
-        state.work_experience = action.payload
+        state.work_experience = action.payload.sort(
+          (itemA: any, itemB: any) => {
+            return (
+              new Date(itemB.created_at).getTime() -
+              new Date(itemA.created_at).getTime()
+            );
+          }
+        );
       })
       .addCase(deleteWorkExperience.rejected, (state, action: any) => {
         state.delete.isLoading = false;

@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import Modal from "../components/Modal";
 import { resetUpdateProfile, updateUser } from "../features/user/userSlice";
 import { setModalOpen } from "../features/utils/utilSlice";
+import Modal from "./Modal";
 
-const EditProfile = () => {
+const UpdateProfile: React.FunctionComponent = () => {
   const { isModalOpen } = useAppSelector((state) => state.util);
   const dispatch = useAppDispatch();
 
@@ -67,8 +67,9 @@ const EditProfile = () => {
     }
   }, [dispatch, isError, isSuccess, message]);
   return (
-    <Modal isOpen={isModalOpen.modalType === "EDIT_PROFILE" ? true : false}>
+    <Modal isOpen={isModalOpen.modalType === "UPDATE_PROFILE" ? true : false}>
       <div
+        id="PROFILE_UPDATE_FORM"
         className=" container  has-background-white pt-8 pb-10 px-4 py-4 has-mw-md mx-auto "
         data-path="0.1.0"
       >
@@ -139,4 +140,4 @@ const EditProfile = () => {
     </Modal>
   );
 };
-export default EditProfile;
+export default UpdateProfile;
